@@ -1,3 +1,7 @@
+from telegram import (
+    ReplyKeyboardMarkup
+)
+
 from telegram.ext import (
     ApplicationBuilder,
     CommandHandler,
@@ -6,9 +10,16 @@ from telegram.ext import (
 )
 
 async def start(update, context):
+    buttons = [
+            ["Помощь", "Общежитие"]
+    ]
+
+    keyboard = ReplyKeyboardMarkup(buttons, resize_keyboard=True)
+
     await context.bot.send_message(
             chat_id=update.effective_chat.id,
-            text="Привет, я помогу тебе с поступлением в СибАДИ."
+            text="Привет, я помогу тебе с поступлением в СибАДИ.",
+            reply_markup=keyboard
     )
 
 async def unknown(update, context):
