@@ -25,7 +25,12 @@ async def start(update, context):
 async def show_contacts(update, context):
     await context.bot.send_message(
             chat_id=update.effective_chat.id,
-            text="<Вставить сюда контактные данные приёмной комиссии>"
+            text=(
+"""Омск, проспект Мира, д. 5, каб. 1.139
+Телефон +7(3812)65-99-88
+Email: priem_kom@sibadi.org
+Мессенджеры +79131499459
+""")
     )
 
 async def show_dormitory_info(update, context):
