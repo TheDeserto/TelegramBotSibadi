@@ -22,6 +22,19 @@ async def start(update, context):
             reply_markup=keyboard
     )
 
+async def show_contacts(update, context):
+    await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text="<Вставить сюда контактные данные приёмной комиссии>"
+    )
+
+async def show_dormitory_info(update, context):
+    await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text="<Вставить сюда информацию об общежитии>"
+    )
+
+
 async def unknown(update, context):
     await context.bot.send_message(
             chat_id=update.effective_chat.id,
@@ -35,6 +48,13 @@ def main():
     application = ApplicationBuilder().token(token).build()
 
     application.add_handler(CommandHandler("start", start))
+
+    application.add_handler(MessageHandler(
+            filters.Regex("^Помощь$"), show_contacts))
+
+    application.add_handler(MessageHandler(
+            filters.Regex("^Общежитие$"), show_dormitory_info))
+
     application.add_handler(MessageHandler(filters.COMMAND | filters.TEXT, unknown))
 
     application.run_polling()
