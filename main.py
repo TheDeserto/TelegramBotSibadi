@@ -11,16 +11,26 @@ from telegram.ext import (
 
 async def start(update, context):
     buttons = [
+            ["Приёмная комиссия"],
             ["Помощь", "Общежитие"]
     ]
 
     keyboard = ReplyKeyboardMarkup(buttons, resize_keyboard=True)
 
-    await context.bot.send_message(
-            chat_id=update.effective_chat.id,
-            text="Привет, я помогу тебе с поступлением в СибАДИ.",
-            reply_markup=keyboard
-    )
+    if context.user_data.get("not first launch") == True:
+        await context.bot.send_message(
+                chat_id=update.effective_chat.id,
+                text="Возвращение в начало.",
+                reply_markup=keyboard
+        )
+    else:
+        await context.bot.send_message(
+                chat_id=update.effective_chat.id,
+                text="Привет, я помогу тебе с поступлением в СибАДИ.",
+                reply_markup=keyboard
+        )
+
+    context.user_data["not first launch"] = True
 
 async def show_contacts(update, context):
     await context.bot.send_message(
@@ -37,6 +47,21 @@ async def show_dormitory_info(update, context):
     await context.bot.send_message(
             chat_id=update.effective_chat.id,
             text="<Вставить сюда информацию об общежитии>"
+    )
+
+async def show_admiration_committee_info(update, context):
+    buttons = [
+        ["Необходимые документы"],
+        ["Подача", "Сроки приёма"],
+        ["В начало"]
+    ]
+
+    keyboard = ReplyKeyboardMarkup(buttons, resize_keyboard=True)
+
+    await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text="Какую информацию показать?",
+            reply_markup=keyboard
     )
 
 
@@ -59,6 +84,12 @@ def main():
 
     application.add_handler(MessageHandler(
             filters.Regex("^Общежитие$"), show_dormitory_info))
+
+    application.add_handler(MessageHandler(
+            filters.Regex("^Приёмная комиссия$"), show_admiration_committee_info))
+
+    application.add_handler(MessageHandler(
+            filters.Regex("^В начало$"), start))
 
     application.add_handler(MessageHandler(filters.COMMAND | filters.TEXT, unknown))
 
