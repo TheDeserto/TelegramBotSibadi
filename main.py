@@ -98,7 +98,7 @@ def main():
 
     application.add_handler(MessageHandler(filters.COMMAND | filters.TEXT, unknown))
 
-    application.run_polling(stop_signal=None)
+    application.run_polling(stop_signals=None)
 
 
 if __name__ == '__main__':
